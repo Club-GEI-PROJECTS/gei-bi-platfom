@@ -1,0 +1,23 @@
+# Image de développement avec hot-reload
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Installer les dépendances système si nécessaire
+RUN apk add --no-cache python3 make g++
+
+# Copier les fichiers de dépendances
+COPY package*.json ./
+
+# Installer les dépendances
+RUN npm ci
+
+# Copier le code source
+COPY . .
+
+# Exposer le port
+EXPOSE 3000
+
+# Commande par défaut (peut être overridée dans docker-compose)
+CMD ["npm", "run", "start:dev"]
+

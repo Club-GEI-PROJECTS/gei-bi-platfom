@@ -24,7 +24,6 @@ export enum OrderStatus {
 }
 
 @Entity('orders')
-@Index(['orderDate'])
 @Index(['status'])
 export class Order {
   @PrimaryGeneratedColumn('uuid')
@@ -67,7 +66,7 @@ export class Order {
   totalAmount: number; // Montant total
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  @Index()
+  @Index() // Index pour améliorer les performances des requêtes temporelles
   orderDate: Date;
 
   @Column({ type: 'timestamp', nullable: true })

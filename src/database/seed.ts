@@ -225,6 +225,99 @@ const companyNames = [
   'Groupe Construction RDC', 'Bâtiment & Co', 'Matériaux Express RDC', 'Construction Elite', 'BTP Solutions',
 ];
 
+// Prix unitaires fixes par produit (générés une seule fois)
+const productPrices: Record<string, number> = {};
+
+// Fonction pour initialiser les prix fixes
+function initializeProductPrices() {
+  if (Object.keys(productPrices).length === 0) {
+    for (const product of products) {
+      let price = 10; // Prix par défaut
+      
+      // Prix réalistes selon la catégorie et le nom du produit
+      if (product.name.includes('Ciment Portland 50kg')) price = 15.50;
+      else if (product.name.includes('Ciment Portland 25kg')) price = 8.00;
+      else if (product.name.includes('Ciment gris')) price = 14.75;
+      else if (product.name.includes('Ciment blanc')) price = 18.50;
+      else if (product.name.includes('Fer à béton 6mm')) price = 10.25;
+      else if (product.name.includes('Fer à béton 8mm')) price = 12.50;
+      else if (product.name.includes('Fer à béton 10mm')) price = 18.75;
+      else if (product.name.includes('Fer à béton 12mm')) price = 21.50;
+      else if (product.name.includes('Fer à béton 14mm')) price = 26.00;
+      else if (product.name.includes('Fer à béton 16mm')) price = 30.25;
+      else if (product.name.includes('Fer à béton 20mm')) price = 42.50;
+      else if (product.name.includes('Treillis soudé')) price = 10.00;
+      else if (product.name.includes('Fil de fer')) price = 4.50;
+      else if (product.name.includes('Sable fin')) price = 32.50;
+      else if (product.name.includes('Sable de rivière')) price = 27.75;
+      else if (product.name.includes('Gravier 5/15')) price = 37.50;
+      else if (product.name.includes('Gravier 15/25')) price = 42.25;
+      else if (product.name.includes('Gravier 25/40')) price = 47.50;
+      else if (product.name.includes('Pierre concassée')) price = 42.50;
+      else if (product.name.includes('Laterite')) price = 20.00;
+      else if (product.name.includes('Brique rouge standard')) price = 0.55;
+      else if (product.name.includes('Brique rouge pleine')) price = 0.70;
+      else if (product.name.includes('Parpaing creux 20x20x40')) price = 1.15;
+      else if (product.name.includes('Parpaing creux 15x20x40')) price = 1.00;
+      else if (product.name.includes('Parpaing plein')) price = 1.40;
+      else if (product.name.includes('Agglo creux')) price = 1.25;
+      else if (product.name.includes('Tôle ondulée galvanisée')) price = 11.50;
+      else if (product.name.includes('Tôle ondulée prélaquée')) price = 14.00;
+      else if (product.name.includes('Tôle trapézoïdale')) price = 16.00;
+      else if (product.name.includes('Tuile métallique')) price = 20.00;
+      else if (product.name.includes('Bardeau bitumineux')) price = 27.50;
+      else if (product.name.includes('Peinture blanche 20L')) price = 45.00;
+      else if (product.name.includes('Peinture blanche 10L')) price = 24.00;
+      else if (product.name.includes('Peinture blanche 5L')) price = 14.00;
+      else if (product.name.includes('Peinture couleur 20L')) price = 52.50;
+      else if (product.name.includes('Peinture couleur 10L')) price = 28.50;
+      else if (product.name.includes('Peinture anti-rouille')) price = 32.50;
+      else if (product.name.includes('Enduit extérieur')) price = 16.00;
+      else if (product.name.includes('Enduit intérieur')) price = 14.00;
+      else if (product.name.includes('Carreau céramique 30x30')) price = 11.50;
+      else if (product.name.includes('Carreau céramique 40x40')) price = 17.00;
+      else if (product.name.includes('Carreau céramique 60x60')) price = 24.00;
+      else if (product.name.includes('Carrelage grès cérame')) price = 27.50;
+      else if (product.name.includes('Porte métallique standard')) price = 215.00;
+      else if (product.name.includes('Porte métallique blindée')) price = 400.00;
+      else if (product.name.includes('Porte en bois massif')) price = 300.00;
+      else if (product.name.includes('Fenêtre PVC simple vitrage')) price = 115.00;
+      else if (product.name.includes('Fenêtre PVC double vitrage')) price = 215.00;
+      else if (product.name.includes('Fenêtre aluminium')) price = 170.00;
+      else if (product.name.includes('Battant de fenêtre')) price = 60.00;
+      else if (product.name.includes('Tuyau PVC 20mm')) price = 3.00;
+      else if (product.name.includes('Tuyau PVC 25mm')) price = 3.75;
+      else if (product.name.includes('Tuyau PVC 32mm')) price = 4.50;
+      else if (product.name.includes('Tuyau PVC 40mm')) price = 6.00;
+      else if (product.name.includes('Tuyau PVC 50mm')) price = 7.50;
+      else if (product.name.includes('Raccord PVC 20mm')) price = 1.00;
+      else if (product.name.includes('Raccord PVC 25mm')) price = 1.40;
+      else if (product.name.includes('Robinet mélangeur')) price = 37.50;
+      else if (product.name.includes('Robinet simple')) price = 13.00;
+      else if (product.name.includes('Câble électrique 1.5mm²')) price = 1.75;
+      else if (product.name.includes('Câble électrique 2.5mm²')) price = 2.50;
+      else if (product.name.includes('Câble électrique 4mm²')) price = 3.50;
+      else if (product.name.includes('Câble électrique 6mm²')) price = 5.00;
+      else if (product.name.includes('Interrupteur simple')) price = 5.50;
+      else if (product.name.includes('Interrupteur double')) price = 8.50;
+      else if (product.name.includes('Prise électrique')) price = 7.00;
+      else if (product.name.includes('Ampoule LED 12W')) price = 8.50;
+      else if (product.name.includes('Ampoule LED 20W')) price = 13.00;
+      else if (product.name.includes('Clou de construction')) price = 3.50;
+      else if (product.name.includes('Vis à bois')) price = 5.50;
+      else if (product.name.includes('Vis à métal')) price = 7.00;
+      else if (product.name.includes('Cheville plastique')) price = 0.30;
+      else if (product.name.includes('Colle à carrelage')) price = 21.50;
+      else if (product.name.includes('Mastic silicone')) price = 5.50;
+      
+      productPrices[product.name] = price;
+    }
+  }
+}
+
+// Initialiser les prix au chargement
+initializeProductPrices();
+
 export async function seedDatabase(dataSource: DataSource) {
   console.log('🌱 Début du seed de la base de données...');
 
@@ -339,17 +432,20 @@ export async function seedDatabase(dataSource: DataSource) {
         `${firstName.toLowerCase()}.${lastName.toLowerCase()}@gmail.com` : 
         `contact@${companyNames[Math.floor(Math.random() * companyNames.length)].toLowerCase().replace(/\s+/g, '')}.cd`;
       
+      const companyName = customerType !== 'particulier' ? companyNames[Math.floor(Math.random() * companyNames.length)] : '';
+      const taxId = customerType !== 'particulier' ? `T${Math.floor(1000000 + Math.random() * 8999999)}` : '';
+      
       const customer = customerRepository.create({
         firstName,
         lastName,
         phone,
-        email: Math.random() < 0.7 ? email : null, // 70% ont un email
+        email, // Toujours un email
         customerType,
-        companyName: customerType !== 'particulier' ? companyNames[Math.floor(Math.random() * companyNames.length)] : null,
-        address: `Avenue ${Math.floor(Math.random() * 100)}, ${city.name}`,
+        companyName: companyName || undefined,
+        address: `Avenue ${Math.floor(Math.random() * 100) + 1}, ${city.name}`,
         cityId: city.id,
-        taxId: customerType !== 'particulier' ? `T${Math.floor(1000000 + Math.random() * 8999999)}` : null,
-        isActive: Math.random() < 0.95, // 95% actifs
+        taxId: taxId || undefined,
+        isActive: true, // Tous actifs
         totalSpent: 0,
         totalOrders: 0,
       });
@@ -389,50 +485,52 @@ export async function seedDatabase(dataSource: DataSource) {
         const product = allProducts[Math.floor(Math.random() * allProducts.length)];
         const quantity = Math.floor(Math.random() * 50) + 1;
         
-        // Prix réalistes selon le produit
-        let unitPrice = 10;
-        if (product.name.includes('Ciment')) unitPrice = Math.random() * 10 + 10;
-        else if (product.name.includes('Fer')) unitPrice = Math.random() * 20 + 15;
-        else if (product.name.includes('Sable') || product.name.includes('Gravier')) unitPrice = Math.random() * 20 + 25;
-        else if (product.name.includes('Peinture')) unitPrice = Math.random() * 30 + 20;
-        else if (product.name.includes('Porte')) unitPrice = Math.random() * 200 + 150;
-        else if (product.name.includes('Fenêtre')) unitPrice = Math.random() * 150 + 80;
-        else unitPrice = Math.random() * 50 + 5;
-        
-        const totalPrice = quantity * unitPrice;
+        // Utiliser le prix fixe du produit
+        const unitPrice = productPrices[product.name] || 10;
+        const totalPrice = Math.round(quantity * unitPrice * 100) / 100; // Arrondir à 2 décimales
         subtotal += totalPrice;
         
         items.push({
           productId: product.id,
           quantity,
-          unitPrice,
+          unitPrice: Math.round(unitPrice * 100) / 100,
           totalPrice,
         } as OrderItem);
       }
       
-      const tax = subtotal * 0.16; // 16% de TVA
-      const shippingCost = subtotal > 1000 ? 0 : Math.random() * 50 + 20; // Frais de livraison si < 1000
-      const totalAmount = subtotal + tax + shippingCost;
+      const tax = Math.round(subtotal * 0.16 * 100) / 100; // 16% de TVA
+      const shippingCost = subtotal > 1000 ? 0 : Math.round((Math.random() * 30 + 20) * 100) / 100; // Frais de livraison si < 1000
+      const totalAmount = Math.round((subtotal + tax + shippingCost) * 100) / 100;
       
       const orderNumber = `CMD-${new Date().getFullYear()}-${String(orderCounter).padStart(6, '0')}`;
       orderCounter++;
+      
+      // Calculer les dates de livraison
+      const deliveryDate = status === 'livrée' || status === 'expédiée' ? 
+        new Date(orderDate.getTime() + Math.floor(Math.random() * 7 + 1) * 24 * 60 * 60 * 1000) : 
+        new Date(orderDate.getTime() + Math.floor(Math.random() * 7 + 1) * 24 * 60 * 60 * 1000);
+      const completedDate = status === 'livrée' ? 
+        new Date(orderDate.getTime() + Math.floor(Math.random() * 10 + 3) * 24 * 60 * 60 * 1000) : 
+        (status === 'expédiée' ? new Date(orderDate.getTime() + Math.floor(Math.random() * 5 + 2) * 24 * 60 * 60 * 1000) : undefined);
+      
+      const notes = Math.random() < 0.3 ? 'Livraison urgente' : 
+                   Math.random() < 0.5 ? 'Appeler avant livraison' : 
+                   'Livraison standard';
       
       const order = orderRepository.create({
         orderNumber,
         customerId: customer.id,
         deliveryCityId: deliveryCity.id,
-        deliveryAddress: `Avenue ${Math.floor(Math.random() * 100)}, ${deliveryCity.name}`,
+        deliveryAddress: `Avenue ${Math.floor(Math.random() * 100) + 1}, ${deliveryCity.name}`,
         status,
-        subtotal,
+        subtotal: Math.round(subtotal * 100) / 100,
         tax,
         shippingCost,
         totalAmount,
         orderDate,
-        deliveryDate: status === 'livrée' || status === 'expédiée' ? 
-          new Date(orderDate.getTime() + Math.random() * 7 * 24 * 60 * 60 * 1000) : null,
-        completedDate: status === 'livrée' ? 
-          new Date(orderDate.getTime() + Math.random() * 10 * 24 * 60 * 60 * 1000) : null,
-        notes: Math.random() < 0.3 ? 'Livraison urgente' : null,
+        deliveryDate,
+        completedDate: completedDate || undefined,
+        notes,
       });
       
       const savedOrder = await orderRepository.save(order);
@@ -458,15 +556,27 @@ export async function seedDatabase(dataSource: DataSource) {
                            paymentStatuses[Math.floor(Math.random() * paymentStatuses.length)];
       
       const transactionId = `TXN-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+      const paymentDate = paymentStatus === 'complété' ? orderDate : 
+                         paymentStatus === 'en_attente' ? orderDate : 
+                         new Date(orderDate.getTime() + Math.floor(Math.random() * 3) * 24 * 60 * 60 * 1000);
+      const reference = paymentMethod.requiresOnline ? 
+        `${paymentMethod.name.substring(0, 3).toUpperCase()}${Math.floor(Math.random() * 1000000)}` : 
+        paymentMethod.name === 'Espèces' ? `CASH-${Math.floor(Math.random() * 10000)}` :
+        paymentMethod.name === 'Chèque' ? `CHQ-${Math.floor(Math.random() * 100000)}` :
+        paymentMethod.name === 'Traite' ? `TRA-${Math.floor(Math.random() * 100000)}` :
+        `REF-${Math.floor(Math.random() * 1000000)}`;
+      
       const payment = paymentRepository.create({
         transactionId,
         orderId: savedOrder.id,
         paymentMethodId: paymentMethod.id,
-        amount: totalAmount,
+        amount: Math.round(totalAmount * 100) / 100,
         status: paymentStatus,
-        paymentDate: paymentStatus === 'complété' ? orderDate : null,
-        reference: paymentMethod.requiresOnline ? 
-          `${paymentMethod.name.substring(0, 3).toUpperCase()}${Math.floor(Math.random() * 1000000)}` : null,
+        paymentDate,
+        reference,
+        notes: paymentStatus === 'échoué' ? 'Paiement refusé' : 
+              paymentStatus === 'complété' ? 'Paiement validé' : 
+              'En attente de validation',
       });
       await paymentRepository.save(payment);
       

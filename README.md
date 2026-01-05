@@ -138,7 +138,7 @@ http://localhost:3000/api
 - `GET /api/products` - Liste tous les produits
 - `GET /api/products/:id` - Détails d'un produit
 
-📚 **Documentation complète** : Voir [DOCUMENTATION.md](DOCUMENTATION.md) pour les détails de chaque endpoint.
+📚 **Documentation complète** : Voir [COMPLETE_GUIDE.md](COMPLETE_GUIDE.md) pour les détails de chaque endpoint.
 
 ## 📊 Connexion Power BI
 
@@ -253,7 +253,7 @@ gei-bi-platform/
 └── README.md                  # Ce fichier
 ```
 
-📚 **Documentation complète** : Voir [DOCUMENTATION.md](DOCUMENTATION.md) pour tous les détails.
+📚 **Documentation complète** : Voir [COMPLETE_GUIDE.md](COMPLETE_GUIDE.md) pour tous les détails.
 
 ## 📊 Structure de la Base de Données
 
@@ -269,7 +269,7 @@ gei-bi-platform/
 - **`payment_methods`** : 6 méthodes de paiement (Espèces, Carte, Mobile Money, etc.)
 - **`sales`** : Ventes directes (historique)
 
-📚 **Documentation complète** : Voir [DOCUMENTATION.md](DOCUMENTATION.md) pour le schéma complet et les relations.
+📚 **Documentation complète** : Voir [COMPLETE_GUIDE.md](COMPLETE_GUIDE.md) pour le schéma complet et les relations.
 
 ### Données géographiques
 
@@ -323,10 +323,7 @@ npm run format
 
 ## 📚 Documentation
 
-- **[DOCUMENTATION.md](DOCUMENTATION.md)** - Documentation complète du projet
-- **[COHERENCE_CHECK.md](COHERENCE_CHECK.md)** - Vérification de cohérence
-- **[DOCKER_SETUP.md](DOCKER_SETUP.md)** - Guide d'installation Docker
-- **[RESET_DB.md](RESET_DB.md)** - Guide de réinitialisation de la base
+- **[COMPLETE_GUIDE.md](COMPLETE_GUIDE.md)** - 📖 **Guide complet unifié** - Toutes les informations en un seul document
 
 ## 🎯 Pour l'exposé au Club GEI
 

@@ -198,6 +198,34 @@ def get_point_of_sale(city: str) -> str:
     return template.format(name=name)
 
 
+# Cache des prix unitaires par produit (générés une seule fois)
+PRODUCT_PRICES: Dict[str, float] = {}
+
+def initialize_product_prices():
+    """Initialise les prix unitaires fixes pour chaque produit"""
+    global PRODUCT_PRICES
+    if not PRODUCT_PRICES:
+        for product in PRODUCTS:
+            min_price, max_price = product["price_range"]
+            # Générer un prix fixe dans la plage pour ce produit
+            PRODUCT_PRICES[product["name"]] = round(random.uniform(min_price, max_price), 2)
+        logger.info(f"💰 {len(PRODUCT_PRICES)} prix unitaires initialisés")
+
+
+def get_product_price(product_name: str) -> float:
+    """Récupère le prix unitaire fixe d'un produit"""
+    if product_name not in PRODUCT_PRICES:
+        # Si le produit n'est pas dans la liste, générer un prix par défaut
+        product = next((p for p in PRODUCTS if p["name"] == product_name), None)
+        if product:
+            min_price, max_price = product["price_range"]
+            PRODUCT_PRICES[product_name] = round(random.uniform(min_price, max_price), 2)
+        else:
+            # Prix par défaut pour produits inconnus
+            PRODUCT_PRICES[product_name] = round(random.uniform(10, 50), 2)
+    return PRODUCT_PRICES[product_name]
+
+
 def generate_sale() -> Dict:
     """Génère une vente aléatoire"""
     # Sélectionner une ville (Kinshasa a plus de poids car plus de communes)
@@ -208,10 +236,10 @@ def generate_sale() -> Dict:
     
     # Sélectionner un produit
     product = random.choice(PRODUCTS)
-    min_price, max_price = product["price_range"]
     min_qty, max_qty = product["quantity_range"]
     
-    unit_price = round(random.uniform(min_price, max_price), 2)
+    # Utiliser le prix fixe du produit
+    unit_price = get_product_price(product["name"])
     quantity = random.randint(min_qty, max_qty)
     
     return {
@@ -314,7 +342,8 @@ def create_order_with_sale(sale_data: Dict) -> bool:
         
         # Créer la commande avec un seul item
         quantity = sale_data['quantity']
-        unit_price = sale_data['unitPrice']
+        # Utiliser le prix fixe du produit
+        unit_price = get_product_price(sale_data['product'])
         total_price = quantity * unit_price
         subtotal = total_price
         tax = round(subtotal * 0.16, 2)
@@ -384,6 +413,10 @@ def run_simulator():
     logger.info(f"📡 API: {API_URL}")
     logger.info(f"🏙️  {len(ALL_CITIES)} villes/communes disponibles")
     logger.info(f"📦 {len(PRODUCTS)} produits dans le catalogue")
+    
+    # Initialiser les prix unitaires fixes
+    initialize_product_prices()
+    
     logger.info("⏸️  Appuyez sur Ctrl+C pour arrêter\n")
     logger.info(f"{'Ville':20} | {'Produit':30} | {'Qté':4} | {'Total':8}")
     logger.info("-" * 70)

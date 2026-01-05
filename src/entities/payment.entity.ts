@@ -18,7 +18,6 @@ export enum PaymentStatus {
 }
 
 @Entity('payments')
-@Index(['paymentDate'])
 @Index(['status'])
 export class Payment {
   @PrimaryGeneratedColumn('uuid')
@@ -48,9 +47,9 @@ export class Payment {
   @Column({ type: 'varchar', length: 20 })
   status: string; // en_attente, complété, échoué, remboursé
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp', nullable: true })
   @Index()
-  paymentDate: Date;
+  paymentDate: Date | null;
 
   @Column({ type: 'varchar', length: 100, nullable: true })
   reference: string; // Référence de transaction (numéro de carte, Mobile Money, etc.)

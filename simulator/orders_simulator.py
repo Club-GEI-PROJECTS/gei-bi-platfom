@@ -57,6 +57,34 @@ ORDER_STATUSES = ['en_attente', 'confirmée', 'en_traitement', 'expédiée', 'li
 # Statuts de paiement
 PAYMENT_STATUSES = ['en_attente', 'complété', 'échoué']
 
+# Cache des prix unitaires par produit (générés une seule fois)
+PRODUCT_PRICES: Dict[str, float] = {}
+
+def initialize_product_prices():
+    """Initialise les prix unitaires fixes pour chaque produit"""
+    global PRODUCT_PRICES
+    if not PRODUCT_PRICES:
+        for product in PRODUCTS:
+            min_price, max_price = product["price_range"]
+            # Générer un prix fixe dans la plage pour ce produit
+            PRODUCT_PRICES[product["name"]] = round(random.uniform(min_price, max_price), 2)
+        logger.info(f"💰 {len(PRODUCT_PRICES)} prix unitaires initialisés")
+
+
+def get_product_price(product_name: str) -> float:
+    """Récupère le prix unitaire fixe d'un produit"""
+    if product_name not in PRODUCT_PRICES:
+        # Si le produit n'est pas dans la liste, générer un prix par défaut
+        product = next((p for p in PRODUCTS if p["name"] == product_name), None)
+        if product:
+            min_price, max_price = product["price_range"]
+            PRODUCT_PRICES[product_name] = round(random.uniform(min_price, max_price), 2)
+        else:
+            # Prix par défaut pour produits inconnus
+            PRODUCT_PRICES[product_name] = round(random.uniform(10, 50), 2)
+    return PRODUCT_PRICES[product_name]
+
+
 # Catalogue de produits avec prix réalistes
 PRODUCTS: List[Dict[str, any]] = [
     # CIMENT
@@ -230,12 +258,13 @@ def generate_order(customers: List[Dict], cities: List[Dict], products: List[Dic
         # Trouver le prix dans le template
         product_template = next((p for p in PRODUCTS if p['name'] == product_name), None)
         if product_template:
-            min_price, max_price = product_template['price_range']
             min_qty, max_qty = product_template['quantity_range']
-            unit_price = round(random.uniform(min_price, max_price), 2)
+            # Utiliser le prix fixe du produit
+            unit_price = get_product_price(product_name)
             quantity = random.randint(min_qty, max_qty)
         else:
-            unit_price = round(random.uniform(10, 100), 2)
+            # Utiliser le prix fixe ou générer un prix par défaut
+            unit_price = get_product_price(product_name)
             quantity = random.randint(1, 50)
         
         total_price = round(unit_price * quantity, 2)
@@ -337,6 +366,9 @@ def run_simulator():
     logger.info("🚀 Démarrage du simulateur de commandes BI")
     logger.info(f"📡 API: {API_BASE}")
     logger.info("⏸️  Appuyez sur Ctrl+C pour arrêter\n")
+    
+    # Initialiser les prix unitaires fixes
+    initialize_product_prices()
     
     # Charger les données initiales
     logger.info("📥 Chargement des données...")
